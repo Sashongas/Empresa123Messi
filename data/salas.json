@@ -1,0 +1,5 @@
+[
+    { "nombre": "Sala A", "capacidad": 10 },
+    { "nombre": "Sala B", "capacidad": 8 },
+    { "nombre": "Sala C", "capacidad": 15 }
+]

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reservas - Empresa123Messi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Gestión de Reservas Internas</h1>
+        <p>Empresa123Messi</p>
+    </header>
+
+    <section class="form-section">
+        <h2>Crear una reserva</h2>
+
+        <form id="reservaForm">
+            <label>Sala:</label>
+            <select id="sala"></select>
+
+            <label>Fecha:</label>
+            <input type="date" id="fecha" required>
+
+            <label>Hora:</label>
+            <input type="time" id="hora" required>
+
+            <button type="submit">Reservar</button>
+        </form>
+
+        <p id="mensaje"></p>
+    </section>
+
+    <section class="reservas-section">
+        <h2>Reservas realizadas</h2>
+        <ul id="listaReservas"></ul>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
