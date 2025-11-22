@@ -21,4 +21,4 @@ Abrir el archivo `index.html` en cualquier navegador.
 
 ## Estado del proyecto
 Funciones principales implementadas  
-Pendientes: login, roles de usuario, integración con backend
+Pendientes: login, roles de usuario, integración con backend -- HECHAS

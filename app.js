@@ -1,4 +1,53 @@
-// Simulación de base de datos
+let usuarioActual = null;
+
+async function cargarUsuarios() {
+    const r = await fetch("data/usuarios.json");
+    return await r.json();
+}
+
+document.getElementById("loginForm").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const user = document.getElementById("user").value;
+    const pass = document.getElementById("pass").value;
+    const loginMensaje = document.getElementById("loginMensaje");
+
+    const usuarios = await cargarUsuarios();
+    const encontrado = usuarios.find(u => u.usuario === user && u.password === pass);
+
+    if (!encontrado) {
+        loginMensaje.textContent = "Usuario o contraseña incorrectos.";
+        loginMensaje.style.color = "red";
+        return;
+    }
+
+    usuarioActual = encontrado;
+
+    loginMensaje.textContent = "Inicio de sesión exitoso.";
+    loginMensaje.style.color = "green";
+
+    document.querySelector(".form-section").style.display = "block";
+    document.querySelector(".reservas-section").style.display = "block";
+    document.querySelector(".login-section").style.display = "none";
+    document.getElementById("logoutBtn").style.display = "block";
+});
+
+
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+
+    usuarioActual = null;
+
+    document.querySelector(".form-section").style.display = "none";
+    document.querySelector(".reservas-section").style.display = "none";
+    document.querySelector(".login-section").style.display = "block";
+    document.getElementById("logoutBtn").style.display = "none";
+
+    document.getElementById("loginMensaje").textContent = "Sesión cerrada correctamente.";
+    document.getElementById("loginMensaje").style.color = "black";
+});
+
+
 let reservas = [];
 
 async function cargarSalas() {
@@ -21,7 +70,22 @@ function mostrarReservas() {
 
     reservas.forEach(r => {
         const li = document.createElement("li");
-        li.textContent = `${r.sala} - ${r.fecha} ${r.hora}`;
+        li.textContent = `${r.sala} - ${r.fecha} ${r.hora} (por ${r.usuario})`;
+
+  
+        if (usuarioActual.rol === "admin") {
+            const borrar = document.createElement("button");
+            borrar.textContent = "Eliminar";
+            borrar.style.marginLeft = "10px";
+
+            borrar.onclick = () => {
+                reservas = reservas.filter(x => x !== r);
+                mostrarReservas();
+            };
+
+            li.appendChild(borrar);
+        }
+
         lista.appendChild(li);
     });
 }
@@ -40,7 +104,8 @@ document.getElementById("reservaForm").addEventListener("submit", e => {
     const reserva = {
         sala: document.getElementById("sala").value,
         fecha: document.getElementById("fecha").value,
-        hora: document.getElementById("hora").value
+        hora: document.getElementById("hora").value,
+        usuario: usuarioActual.usuario
     };
 
     const mensaje = document.getElementById("mensaje");
@@ -52,12 +117,13 @@ document.getElementById("reservaForm").addEventListener("submit", e => {
     }
 
     reservas.push(reserva);
+
     mensaje.textContent = "✔ Reserva creada con éxito.";
     mensaje.style.color = "green";
 
     mostrarReservas();
 });
 
-// Inicializa
+// Inicializar
 cargarSalas();
 mostrarReservas();
